@@ -40,6 +40,11 @@ public class NetworkUtils {
 
     private final static String ACCES_KEY = "MDoxYjJmZGY2YS0zNTY2LTExZTctYTA0OC0xZjk2OGM0MWNhYTU6aG9OcVpJMkRJQjNvcVFNb2hlaGVZWllkSVJIdEFDWkxHQkd4";
 
+    private static int lastPage = 0;
+    private static int lastRecordNumber = 0;
+
+
+
     public static Map<String, Object> getRandomProductRecordNumber() {
         Random r = new Random();
         int min = 0;
@@ -73,12 +78,12 @@ public class NetworkUtils {
     public static URL buildUrl() {
 
         Map<String, Object> randomPageAndRecordNumber = getRandomProductRecordNumber();
-        int page = (int)randomPageAndRecordNumber.get("page");
-        int recordNumber = (int)randomPageAndRecordNumber.get("recordNumber");
+        lastPage = (int)randomPageAndRecordNumber.get("page");
+        lastRecordNumber = (int)randomPageAndRecordNumber.get("recordNumber");
 
         Uri builtUri = Uri.parse(LCBO_BASE_URL).buildUpon()
                 .appendPath(PARAM_PRODUCTS)
-                .appendQueryParameter(PARAM_PAGE, String.valueOf(page))
+                .appendQueryParameter(PARAM_PAGE, String.valueOf(lastPage))
                 .appendQueryParameter(PARAM_ACCES, ACCES_KEY)
                 .build();
 
@@ -93,8 +98,8 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.e(NetworkUtils.LOG_TAG, String.valueOf(page));
-        Log.e(NetworkUtils.LOG_TAG, String.valueOf(recordNumber));
+        Log.e(NetworkUtils.LOG_TAG, String.valueOf(lastPage));
+        Log.e(NetworkUtils.LOG_TAG, String.valueOf(lastRecordNumber));
         return url;
     }
 
@@ -146,21 +151,24 @@ public class NetworkUtils {
 
             try {
                 JSONObject lcboResultsJSONObject =  new JSONObject(lcboResults);
-
+                Log.i(LOG_TAG, "1");
                 Map<String, Object> data = CollectionUtils.toMap(lcboResultsJSONObject);
-                
+                Log.i(LOG_TAG, "2");
                 @SuppressWarnings("unchecked") List<HashMap<String, Object>> result = (List<HashMap<String, Object>>) data.get("result");
-
-                Map<String, Object> product = result.get(0);
-
+                Log.i(LOG_TAG, "3");
+                Map<String, Object> product = result.get(lastRecordNumber);
+                Log.i(LOG_TAG, "4");
                 if (delegate != null) {
-
+                    Log.i(LOG_TAG, "5");
                     delegate.randomProduct(product);
                 }
-
+                Log.i(LOG_TAG, "6");
             } catch (JSONException e) {
+                Log.i(LOG_TAG, "7");
                 e.printStackTrace();
+                Log.i(LOG_TAG, "8");
             }
+            Log.i(LOG_TAG, "9");
         }
     }
 }
