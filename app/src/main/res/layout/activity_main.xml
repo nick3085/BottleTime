@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/tv_random_bottle_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.58"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp"
+        android:scrollHorizontally="true"
+        android:scrollbars="vertical"
+        android:text="@string/tv_result"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/ib_random_bottle_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:elevation="0dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/none_bottle" />
+
+    <TextView
+        android:id="@+id/tv_random_bottle_producer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.24"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/button_get_bottle"
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:elevation="15dp"
+        android:onClick="makeLcboQuery"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/btn_get_bottle" />
+</LinearLayout>

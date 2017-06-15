@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Bottle Time</string>
+    <string name="bottle_picture">Bottle picture</string>
+    <string name="btn_get_bottle">Shuffle</string>
+    <string name="tv_searching">searching…</string>
+    <string name="tv_result">restult</string>
+</resources>
