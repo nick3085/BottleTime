@@ -3,10 +3,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -50,6 +48,11 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
         ImageLoader.getInstance().init(imageLoaderConfiguration);
     }
 
+    /**
+     * Onclicklistener for shuffle button
+     *
+     * @param v
+     */
     public void makeLcboQuery(View v) {
         
         mSearchResultTitleTV.setText(R.string.tv_searching);
@@ -70,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
         mSearchResultTitleTV.setText(name);
         mSearchResultProducerTV.setText(String.format("Producer: %s", producer));
 
-        Log.i(LOG_TAG, "13");
 
         if (imageURL != null) {
             ImageLoader.getInstance().loadImage(imageURL, new ImageLoadingListener() {
@@ -81,13 +83,11 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
 
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    mSearchResultImageUrlIB.setImageDrawable();
                 }
 
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                     // TODO: 6/15/17 remove leader show code
-                    Log.i(LOG_TAG, "14");
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), loadedImage);
                     mSearchResultImageUrlIB.setImageDrawable(bitmapDrawable);
                 }
@@ -99,8 +99,6 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
             });
         }
 
-        Log.i(LOG_TAG, "15");
         Toast.makeText(MainActivity.this , "Served", Toast.LENGTH_LONG).show();
-        Log.i(LOG_TAG, "16");
     }
 }

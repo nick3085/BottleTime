@@ -26,9 +26,11 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:elevation="0dp"
+        android:onClick="makeLcboQuery"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:scaleType="centerCrop"
+        android:textAlignment="center"
         app:srcCompat="@drawable/none_bottle" />
 
     <TextView
