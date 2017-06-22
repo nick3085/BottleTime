@@ -151,24 +151,15 @@ public class NetworkUtils {
 
             try {
                 JSONObject lcboResultsJSONObject =  new JSONObject(lcboResults);
-                Log.i(LOG_TAG, "1");
                 Map<String, Object> data = CollectionUtils.toMap(lcboResultsJSONObject);
-                Log.i(LOG_TAG, "2");
-                @SuppressWarnings("unchecked") List<HashMap<String, Object>> result = (List<HashMap<String, Object>>) data.get("result");
-                Log.i(LOG_TAG, "3");
+                List<HashMap<String, Object>> result = (List<HashMap<String, Object>>) data.get("result");
                 Map<String, Object> product = result.get(lastRecordNumber);
-                Log.i(LOG_TAG, "4");
                 if (delegate != null) {
-                    Log.i(LOG_TAG, "5");
                     delegate.randomProduct(product);
                 }
-                Log.i(LOG_TAG, "6");
             } catch (JSONException e) {
-                Log.i(LOG_TAG, "7");
                 e.printStackTrace();
-                Log.i(LOG_TAG, "8");
             }
-            Log.i(LOG_TAG, "9");
         }
     }
 }
