@@ -68,9 +68,6 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
         mGetBottleBtn.setEnabled(false);
         Toast.makeText(MainActivity.this , "Serving...", Toast.LENGTH_SHORT).show();
 
-        //mSearchResultTitleTV.setText(R.string.tv_searching);
-        //mSearchResultProducerTV.setText(R.string.tv_searching);
-
         NetworkUtils.delegate = this;
         NetworkUtils.makeLcboQuery();
     }
