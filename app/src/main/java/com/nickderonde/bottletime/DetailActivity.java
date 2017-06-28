@@ -1,5 +1,6 @@
 package com.nickderonde.bottletime;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -64,7 +65,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void goToLocation(View v) {
-        setContentView(R.layout.activity_maps);
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
     }
 
     public void showProduct(Map<String, Object> product) {
