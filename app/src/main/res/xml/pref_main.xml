@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Sound">
     <CheckBoxPreference
         android:defaultValue="true"
-        android:key="play_pop"
+        android:key="@string/pref_play_sound"
         android:summaryOff="Pop sound Off"
         android:summaryOn="Pop sound On" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Debug">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_show_toasts"
+            android:summaryOff="Toasts Off"
+            android:summaryOn="Toasts On" />
+    </PreferenceCategory>
 </PreferenceScreen>

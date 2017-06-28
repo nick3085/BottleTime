@@ -5,15 +5,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -37,10 +30,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mOriginTV;
     private TextView mReleasedOnTV;
 
-    private ImageButton mProductLoactionBtn;
-
     static public Map<String, Object> product;
-    private Bitmap loadedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +47,7 @@ public class DetailActivity extends AppCompatActivity {
         mTastingNoteTV = (TextView) findViewById(R.id.tv_tasting_note);
         mOriginTV = (TextView) findViewById(R.id.tv_origin);
         mReleasedOnTV = (TextView) findViewById(R.id.tv_released_on);
-
         mProductImageUrlIm = (ImageView) findViewById(R.id.im_product_image);
-        mProductLoactionBtn = (ImageButton) findViewById(R.id.btn_product_location);
 
         // Setup universal image loader
         DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()

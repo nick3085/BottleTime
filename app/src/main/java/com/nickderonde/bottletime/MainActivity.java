@@ -4,11 +4,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
-import android.media.audiofx.Visualizer;
-import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,24 +25,24 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements NetworkUtils.NetworkDelegate {
+public class MainActivity extends AppCompatActivity implements NetworkUtils.NetworkDelegate, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public final static String LOG_TAG = "Bottle Time Main";
+    public final static String LOG_TAG = "Bottle";
 
     private TextView mSearchResultTitleTV;
     private TextView mSearchResultProducerTV;
     private ImageButton mSearchResultImageUrlIB;
     private MediaPlayer popSoundMP;
     private Button mGetBottleBtn;
-//    private MainView mMainView;
     public Map<String, Object> currentProduct;
+
+    private boolean playSound;
+    private boolean showToasts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        mMainView =(MainView) findViewById(R.id.activity_main);
 
         mSearchResultTitleTV = (TextView) findViewById(R.id.tv_random_bottle_title);
         mSearchResultProducerTV = (TextView) findViewById(R.id.tv_random_bottle_producer);
@@ -62,14 +61,22 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
                 .build();
         ImageLoader.getInstance().init(imageLoaderConfiguration);
 
-//        setupSharedPreferences();
-//        setupPermissions();
+        setupSharedPreferences();
     }
 
-//    public void setupSharedPreferences() {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        mMainView.(sharedPreferences.getBoolean("play_pop", true));
-//    }
+    /**
+     * Sets the playSound setting for playing the pop sound or not
+     *
+     * @param playSound
+     */
+    public void setPlaySound(boolean playSound) {this.playSound = playSound; }
+
+    /**
+     * Sets the showToasts for the debug mode setting
+     *
+     * @param showToasts
+     */
+    public void setShowToasts(boolean showToasts) {this.showToasts = showToasts; }
 
     /**
      * Onclicklistener for shuffle button
@@ -79,9 +86,12 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
     public void makeLcboQuery(View v) {
 
         mGetBottleBtn.setEnabled(false);
-        Toast.makeText(MainActivity.this , "Serving...", Toast.LENGTH_SHORT).show();
+        if (showToasts) {
+            Toast.makeText(MainActivity.this , "Serving...", Toast.LENGTH_SHORT).show();
+        }
 
         NetworkUtils.delegate = this;
+        Log.i(LOG_TAG, "makeLcboQuery");
         NetworkUtils.makeLcboQuery();
     }
 
@@ -124,18 +134,23 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
 
         if (imageURL != null) {
             ImageLoader.getInstance().loadImage(imageURL, new ImageLoadingListener() {
+
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
-                    //loader show code here
+                    Log.i(LOG_TAG, "onLoadingStarted: randomProduct");
+                    mSearchResultImageUrlIB.setImageResource(R.drawable.loading_icon);
                 }
 
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    Log.i(LOG_TAG, "onLoadingFailed: randomProduct");
+                    mSearchResultImageUrlIB.setImageResource(R.drawable.none_bottle);
                     complete(name, producer);
                 }
 
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    Log.i(LOG_TAG, "onLoadingComplete: randomProduct");
                     complete(name, producer);
                     BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), loadedImage);
                     mSearchResultImageUrlIB.setImageDrawable(bitmapDrawable);
@@ -143,6 +158,8 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
 
                 @Override
                 public void onLoadingCancelled(String imageUri, View view) {
+                    Log.i(LOG_TAG, "onLoadingCancelled: randomProduct");
+                    mSearchResultImageUrlIB.setImageResource(R.drawable.none_bottle);
                     complete(name, producer);
                 }
             });
@@ -151,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
             complete(name, producer);
         }
     }
-
 
     /**
      * Complete method
@@ -164,18 +180,23 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
         mSearchResultProducerTV.setText(String.format("Producer: %s", producer));
         mGetBottleBtn.setEnabled(true);
         playPop();
-        Toast.makeText(MainActivity.this , "Served", Toast.LENGTH_SHORT).show();
+        if (showToasts) {
+            Toast.makeText(MainActivity.this , "Served", Toast.LENGTH_SHORT).show();
+        }
+        Log.i(LOG_TAG, "complete: name + producer");
     }
 
     /**
      * Play sound Method
      */
     private void playPop(){
-        popSoundMP.start();
+        if (playSound) {
+            popSoundMP.start();
+        }
     }
 
     /**
-     * put options menu in actionbar
+     * put settings menu in actionbar
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -196,5 +217,40 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * get all values from the shared preferences and set it up and register the listener
+     *
+     */
+    public void setupSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        setPlaySound(sharedPreferences.getBoolean(getString(R.string.pref_play_sound), getResources().getBoolean(R.bool.pref_play_sound_default)));
+        setShowToasts(sharedPreferences.getBoolean(getString(R.string.pref_show_toasts), getResources().getBoolean(R.bool.pref_show_toasts_default)));
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    /**
+     * get all values from the shared preferences and set it up and register the listener
+     *
+     */
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.pref_play_sound))) {
+            setPlaySound(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_play_sound_default)));
+        } else if (key.equals(getString(R.string.pref_show_toasts))) {
+            setShowToasts(sharedPreferences.getBoolean(key, getResources().getBoolean(R.bool.pref_show_toasts_default)));
+        }
+    }
+
+    /**
+     * Unregister VisualizerActivity as an OnPreferenceChangedListener to avoid any memory leaks.
+     *
+     */
+    public void onDestroy(){
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 }

@@ -25,4 +25,9 @@
     <string name="tasting_note">Tasting note</string>
     <string name="origin">Origin</string>
     <string name="release">Release</string>
+
+    <!-- Labels for the show mid range checkbox preference -->
+    <string name="pref_play_sound">Play pop sound</string>
+    <string name="pref_show_toasts">Show Toasts</string>
+
 </resources>
