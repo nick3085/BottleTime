@@ -2,40 +2,34 @@ package com.nickderonde.bottletime;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    public final static String LOG_TAG = "Bottle Maps";
 
     LocationManager locationManager;
     LocationListener locationListener;
@@ -67,14 +61,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        Toast.makeText(MapsActivity.this , "onCreate.", Toast.LENGTH_SHORT).show();
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
 
     /**
      * Manipulates the map once available.
@@ -88,22 +78,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        Toast.makeText(MapsActivity.this , "onMapsReady", Toast.LENGTH_SHORT).show();
-
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
+
+            /**
+             *
+             *
+             * @param location
+             */
             @Override
             public void onLocationChanged(Location location) {
                 // Add a marker to gps location and move the camera
                 //clear markers on map
                 mMap.clear();
+
+                //show gps location
                 LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(myLocation).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 1));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 10));
 
+                //add some bottle stores to the map
                 LatLng store = new LatLng(43.6453, -79.3946);
                 mMap.addMarker(new MarkerOptions().position(store).title("King & Spadina, Toronto"));
+
+                LatLng store1 = new LatLng(43.842, -79.0223);
+                mMap.addMarker(new MarkerOptions().position(store1).title("Bayly & Harwood, Ajax"));
+
+                LatLng store2 = new LatLng(48.452, -89.2513);
+                mMap.addMarker(new MarkerOptions().position(store2).title("Dawson & Hwy 11 / 17, Thunder Bay"));
+
+                LatLng store3 = new LatLng(43.6454, -79.7552);
+                mMap.addMarker(new MarkerOptions().position(store3).title("Mavis & Steeles, Brampton"));
+
+                LatLng store4 = new LatLng(43.6754, -79.5571);
+                mMap.addMarker(new MarkerOptions().position(store4).title("Eglinton & Kipling, Etobicoke"));
+
+                LatLng store5 = new LatLng(43.774, -79.2797);
+                mMap.addMarker(new MarkerOptions().position(store5).title("Kennedy & 401, Scarborough"));
             }
 
             @Override
@@ -118,12 +130,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onProviderDisabled(String provider) {
-
+                Log.i(LOG_TAG, "onProviderDisabled");
             }
         };
         permissions();
     }
 
+
+    /**
+     * Check for permissions and ask for them when needed
+     *
+     */
     public void permissions() {
         // Check and ask for the permissions
         if (Build.VERSION.SDK_INT < 23) {
@@ -137,7 +154,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10);
             } else {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15, 15, locationListener);
 
@@ -152,5 +169,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 10));
             }
         }
+    }
+
+    /**
+     * Alert method for disabled GPS
+     * guide users to preferences
+     *
+     */
+    private void showGPSDisabledAlertToUser(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Goto Settings Page To Enable GPS",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 }

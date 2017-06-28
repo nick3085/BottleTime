@@ -1,10 +1,14 @@
 package com.nickderonde.bottletime;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.LocationManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mOriginTV;
     private TextView mReleasedOnTV;
 
+    public final static String LOG_TAG = "Bottle Detail";
     static public Map<String, Object> product;
 
     @Override
@@ -64,11 +69,21 @@ public class DetailActivity extends AppCompatActivity {
         showProduct(product);
     }
 
+    /**
+     * When clicked in button start new intent and start Mapsactivity
+     *
+     * @param v
+     */
     public void goToLocation(View v) {
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Get al product details and process data
+     *
+     * @param product
+     */
     public void showProduct(Map<String, Object> product) {
 
         final String name               = (product.containsKey("name") && (product.get("name") instanceof String)) ? (String)product.get("name") : "Unknown";
@@ -129,3 +144,4 @@ public class DetailActivity extends AppCompatActivity {
         mReleasedOnTV.setText(releasedOn);
     }
 }
+

@@ -29,5 +29,15 @@
     <!-- Labels for the show mid range checkbox preference -->
     <string name="pref_play_sound">Play pop sound</string>
     <string name="pref_show_toasts">Show Toasts</string>
+    <string name="alcohol_content_label">Alcohol content:</string>
+    <string name="type_label">Type:</string>
+    <string name="category_label">Category:</string>
+    <string name="price_label">Price:</string>
+    <string name="producer_label">Producer:</string>
+    <string name="release_label">Release:</string>
+    <string name="origin_label">Origin:</string>
+    <string name="taste_label">Taste:</string>
+    <string name="serve_label">Serve:</string>
+    <string name="show_stores_label">Show Stores</string>
 
 </resources>

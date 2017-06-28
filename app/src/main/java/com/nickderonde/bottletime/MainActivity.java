@@ -1,9 +1,13 @@
 package com.nickderonde.bottletime;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -27,7 +31,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NetworkUtils.NetworkDelegate, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public final static String LOG_TAG = "Bottle";
+    public final static String LOG_TAG = "Bottle main";
 
     private TextView mSearchResultTitleTV;
     private TextView mSearchResultProducerTV;
