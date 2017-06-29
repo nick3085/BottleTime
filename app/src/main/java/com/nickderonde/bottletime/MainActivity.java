@@ -1,13 +1,9 @@
 package com.nickderonde.bottletime;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.LocationManager;
 import android.media.MediaPlayer;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -249,12 +245,11 @@ public class MainActivity extends AppCompatActivity implements NetworkUtils.Netw
     }
 
     /**
-     * Unregister VisualizerActivity as an OnPreferenceChangedListener to avoid any memory leaks.
+     * Unregister Mainctivity as an OnPreferenceChangedListener to avoid any memory leaks.
      *
      */
     public void onDestroy(){
         super.onDestroy();
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(this);
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 }

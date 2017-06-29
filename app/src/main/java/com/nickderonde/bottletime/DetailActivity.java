@@ -1,11 +1,8 @@
 package com.nickderonde.bottletime;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.LocationManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +39,8 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        Log.i(LOG_TAG, "onCreate");
 
         mProductTitleTV = (TextView) findViewById(R.id.tv_product_title);
         mProductProducerTV = (TextView) findViewById(R.id.tv_product_producer);
@@ -95,6 +94,7 @@ public class DetailActivity extends AppCompatActivity {
         final String releasedOn         = (product.containsKey("released_on") && (product.get("released_on") instanceof String)) ? (String)product.get("released_on") : "Unknown";
         final String producer           = (product.containsKey("producer_name") && (product.get("producer_name") instanceof String)) ? (String)product.get("producer_name") : "Unknown";
         final Integer priceInCents      = (product.containsKey("price_in_cents") && (product.get("price_in_cents") instanceof Integer)) ? (Integer) product.get("price_in_cents") : null;
+
         if (priceInCents == null) {
             mPriceInCentsTV.setText("Unknown");
         } else {

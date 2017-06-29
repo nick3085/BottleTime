@@ -3,13 +3,10 @@ package com.nickderonde.bottletime.utilities;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -38,14 +35,14 @@ public class NetworkUtils {
 
     private final static String PARAM_ACCES =  "access_key";
 
-    private final static String ACCES_KEY = "MDoxYjJmZGY2YS0zNTY2LTExZTctYTA0OC0xZjk2OGM0MWNhYTU6aG9OcVpJMkRJQjNvcVFNb2hlaGVZWllkSVJIdEFDWkxHQkd4";
+    private final static String ACCES_KEY = "MDo4MjliYTNhZS01Y2MyLTExZTctYWM0OS0wM2MxYzIxZmMyZTM6SVJsY2Y3Qno4cU5XU0R4YkZCYWVQVWczSmFSSTBhYXU1UWhB";
 
     private static int lastPage = 0;
     private static int lastRecordNumber = 0;
 
 
 
-    public static Map<String, Object> getRandomProductRecordNumber() {
+    private static Map<String, Object> getRandomProductRecordNumber() {
         Random r = new Random();
         int min = 0;
         int max = 11486-1;
@@ -75,7 +72,7 @@ public class NetworkUtils {
         return results;
     }
 
-    public static URL buildUrl() {
+    private static URL buildUrl() {
 
         Map<String, Object> randomPageAndRecordNumber = getRandomProductRecordNumber();
         lastPage = (int)randomPageAndRecordNumber.get("page");
@@ -103,7 +100,7 @@ public class NetworkUtils {
         return url;
     }
 
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    private static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();

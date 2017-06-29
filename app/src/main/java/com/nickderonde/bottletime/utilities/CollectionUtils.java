@@ -12,9 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public final class CollectionUtils {
+final class CollectionUtils {
 
-    public static Map<String, Object> toMap(JSONObject object) throws JSONException {
+    static Map<String, Object> toMap(JSONObject object) throws JSONException {
         Map<String, Object> map = new HashMap<String, Object>();
 
         Iterator<String> keysItr = object.keys();
@@ -34,7 +34,7 @@ public final class CollectionUtils {
         return map;
     }
 
-    public static List<Object> toList(JSONArray array) throws JSONException {
+    private static List<Object> toList(JSONArray array) throws JSONException {
         List<Object> list = new ArrayList<Object>();
         for(int i = 0; i < array.length(); i++) {
             Object value = array.get(i);
